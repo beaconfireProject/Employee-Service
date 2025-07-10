@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class VisaStatus {
-    private String id;
+//    private String id;
     private String visaType;
     private Boolean activeFlag;
     private LocalDate startDate;

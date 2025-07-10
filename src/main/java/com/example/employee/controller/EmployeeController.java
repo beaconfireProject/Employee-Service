@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api/employee")
 public class EmployeeController {
-
     @Autowired
     private EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) { this.employeeService = employeeService; }
 
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
@@ -24,7 +25,8 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployees());
+        List<Employee> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/{id}")

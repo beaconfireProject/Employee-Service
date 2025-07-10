@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class PersonalDocument {
-    private String id;
+//    private String id;
     private String path;
     private String title;
     private String comment;
