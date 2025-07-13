@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "6534e531-07f7-4618-9c61-2841ef6a9300",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45708394",
+		"_collection_link": "https://hyungju-2609902.postman.co/workspace/Hyungju's-Workspace~8176803d-28c1-4a5d-8bff-a348debfbc89/collection/45708394-6534e531-07f7-4618-9c61-2841ef6a9300?action=share&source=collection_link&creator=45708394"
+	},
+	"item": [
+		{
+			"name": "Get All Employees",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee by UserId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/employees/userId/ef1004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"userId",
+						"ef1004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"ef10023\",\r\n  \"firstName\": \"Fiona\",\r\n  \"lastName\": \"Chen\",\r\n  \"cellPhone\": \"555-999-1010\",\r\n  \"alternatePhone\": \"555-888-1010\",\r\n  \"email\": \"fiona.chen@example.com\",\r\n  \"gender\": \"Female\",\r\n  \"ssn\": \"333-22-1111\",\r\n  \"dob\": \"1991-08-25\",\r\n  \"startDate\": \"2024-06-01\",\r\n  \"endDate\": null,\r\n  \"driverLicense\": \"D4563219\",\r\n  \"driverLicenseExpiration\": \"2029-06-01\",\r\n  \"houseId\": \"h1006\",\r\n  \"contact\": [\r\n    {\r\n      \"id\": \"c003\",\r\n      \"firstName\": \"Lily\",\r\n      \"lastName\": \"Chen\",\r\n      \"cellPhone\": \"555-444-5555\",\r\n      \"alternatePhone\": \"555-444-6666\",\r\n      \"email\": \"lily.chen@example.com\",\r\n      \"relationship\": \"Mother\",\r\n      \"type\": \"Emergency\"\r\n    },\r\n    {\r\n      \"id\": \"c004\",\r\n      \"firstName\": \"Kevin\",\r\n      \"lastName\": \"Tran\",\r\n      \"cellPhone\": \"555-222-3333\",\r\n      \"alternatePhone\": \"\",\r\n      \"email\": \"kevin.tran@example.com\",\r\n      \"relationship\": \"Friend\",\r\n      \"type\": \"Reference\"\r\n    }\r\n  ],\r\n  \"address\": [\r\n    {\r\n      \"id\": \"a003\",\r\n      \"addressLine1\": \"789 Birch Ave\",\r\n      \"addressLine2\": \"Suite 302\",\r\n      \"city\": \"Austin\",\r\n      \"state\": \"TX\",\r\n      \"zipCode\": \"73301\"\r\n    }\r\n  ],\r\n  \"visaStatus\": [\r\n    {\r\n      \"id\": \"v003\",\r\n      \"visaType\": \"Green Card\",\r\n      \"activeFlag\": true,\r\n      \"startDate\": \"2022-10-01\",\r\n      \"endDate\": null,\r\n      \"lastModificationDate\": \"2024-01-15\"\r\n    }\r\n  ],\r\n  \"personalDocument\": [\r\n    {\r\n      \"id\": \"pd003\",\r\n      \"path\": \"/docs/fiona_greencard.pdf\",\r\n      \"title\": \"Green Card\",\r\n      \"comment\": \"Permanent Resident\",\r\n      \"createDate\": \"2022-10-01\"\r\n    },\r\n    {\r\n      \"id\": \"pd004\",\r\n      \"path\": \"/docs/fiona_dl.pdf\",\r\n      \"title\": \"Driver License\",\r\n      \"comment\": \"Texas License\",\r\n      \"createDate\": \"2024-06-01\"\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/employees/6873c939611ecb4b110848ca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"6873c939611ecb4b110848ca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Employee",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9001/api/employee/e1001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"employee",
+						"e1001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee Contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"Fiona\",\r\n  \"lastName\": \"Chen\",\r\n  \"cellPhone\": \"555-999-1010\",\r\n  \"alternatePhone\": \"555-888-1010\",\r\n  \"email\": \"fiona.chen@example.com\",\r\n  \"relationship\": \"sister\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/contact",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee Contact",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/contact/349318779",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"contact",
+						"349318779"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee Visa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"visaType\": \"H1B\",\r\n    \"activeFlag\": true,\r\n    \"startDate\": \"2022-01-01\",\r\n    \"endDate\": \"2025-01-01\",\r\n    \"lastModificationDate\": \"2024-06-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/visa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"visa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee Visa",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/visa/905529716",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"visa",
+						"905529716"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee Document",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"path\": \"/docs/passport-john2.pdf\",\r\n    \"title\": \"passport2\",\r\n    \"comment\": \"scanned copy2\",\r\n    \"createDate\": \"2022-05-20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/document",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"document"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee Document",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/document/175295283",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"document",
+						"175295283"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee Address",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"addressLine1\": \"123 Main St\",\r\n    \"addressLine2\": \"Apt 4B\",\r\n    \"city\": \"Seattle\",\r\n    \"state\": \"WA\",\r\n    \"zipCode\": \"98101\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/address",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee Address",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/address/1681439992",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"address",
+						"1681439992"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
