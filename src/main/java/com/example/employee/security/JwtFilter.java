@@ -25,9 +25,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
-
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
@@ -58,6 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
 
             } catch (JwtException ex) {
+                System.out.println("exception");
                 // Invalid or expired token - optionally log or handle
             }
         }
@@ -65,6 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             chain.doFilter(request, response);
         } catch (Exception e) {
+            System.out.println("exception");
             throw new RuntimeException(e);
         }
     }
