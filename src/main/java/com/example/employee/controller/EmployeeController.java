@@ -12,7 +12,10 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,17 +26,12 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
     public EmployeeController(EmployeeService employeeService, MongoTemplate mongoTemplate) {
         this.employeeService = employeeService;
-        this.mongoTemplate = mongoTemplate;
     }
 
     @PostMapping
     public ResponseEntity<DtoResponse> createEmployee(@RequestBody Employee employee) {
-        System.out.println(employee);
         Employee created = employeeService.createEmployee(employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
@@ -70,19 +68,11 @@ public class EmployeeController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<DtoResponse> updateEmployee(@PathVariable String id, @RequestBody Map<String, Object> body) {
-        Query query = new Query(Criteria.where("id").is(id));
-        Update update = new Update();
-        for(String s: body.keySet()) {
-            if(s.equals("contact") || s.equals("visaStatus") || s.equals("address") || s.equals("personalDocument")) {
-                throw new RuntimeException("Cannot patch subdocuments, please remove and re-add");
-            }
-            update.set(s, body.get(s));
-        }
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, Employee.class);
+        Employee employee = employeeService.patchEmployee(id, body);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
-                .data(updateResult)
+                .data(employee)
                 .message("Employee updated successfully")
                 .build();
         return ResponseEntity.ok().body(dtoResponse);
@@ -100,13 +90,9 @@ public class EmployeeController {
         return ResponseEntity.ok().body(dtoResponse);
     }
 
-    @GetMapping("userId/{userId}")
+    @GetMapping("/userId/{userId}")
     public ResponseEntity<DtoResponse> getEmployeeByUserId(@PathVariable String userId) {
-        Query query= new Query(Criteria.where("userId").is(userId));
-        Employee employee = mongoTemplate.findOne(query, Employee.class);
-        if(employee == null) {
-            throw new RuntimeException("Employee not found");
-        }
+        Employee employee = employeeService.getEmployeeByUserId(userId);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -170,13 +156,11 @@ public class EmployeeController {
     @PostMapping("/{id}/contact")
     public ResponseEntity<DtoResponse> addContact(@PathVariable String id, @RequestBody Contact contact) {
         contact.setId("" + (int)(Math.random() * (Integer.MAX_VALUE - 1)));
-        Query query = new Query(Criteria.where("id").is(id));
-        Update update = new Update().addToSet("contact", contact);
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, Employee.class);
-        if (updateResult.getMatchedCount() == 0) {
-            throw new RuntimeException("Contact not added");
-        }
         Employee employee = employeeService.getEmployeeById(id);
+        List<Contact> contacts = employee.getContact();
+        contacts.add(contact);
+        employee.setContact(contacts);
+        employee = employeeService.updateEmployee(id, employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -188,14 +172,11 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}/contact/{contactId}")
     public ResponseEntity<DtoResponse> removeContact(@PathVariable String id, @PathVariable String contactId) {
-        Query query = new Query(Criteria.where("id").is(id));
-        Query query2 = new Query(Criteria.where("id").is(contactId));
-        Update update = new Update().pull("contact", query2);
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, Employee.class);
-        if (updateResult.getMatchedCount() == 0) {
-            throw new RuntimeException("Contact not removed");
-        }
         Employee employee = employeeService.getEmployeeById(id);
+        employee.setContact(employee.getContact()
+                .stream()
+                .filter(c -> c.getId().equals(contactId))
+                .collect(Collectors.toList()));
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -207,14 +188,11 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}/visa/{visaId}")
     public ResponseEntity<DtoResponse> removeVisa(@PathVariable String id, @PathVariable String visaId) {
-        Query query = new Query(Criteria.where("id").is(id));
-        Query query2 = new Query(Criteria.where("id").is(visaId));
-        Update update = new Update().pull("visaStatus", query2);
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, Employee.class);
-        if (updateResult.getMatchedCount() == 0) {
-            throw new RuntimeException("Visa Status not removed");
-        }
         Employee employee = employeeService.getEmployeeById(id);
+        employee.setVisaStatus(employee.getVisaStatus()
+                .stream()
+                .filter(c -> c.getId().equals(visaId))
+                .collect(Collectors.toList()));
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -224,16 +202,13 @@ public class EmployeeController {
         return ResponseEntity.ok().body(dtoResponse);
     }
 
-    @DeleteMapping("/{id}/address/{address}")
-    public ResponseEntity<DtoResponse> removeAddress(@PathVariable String id, @PathVariable String address) {
-        Query query = new Query(Criteria.where("id").is(id));
-        Query query2 = new Query(Criteria.where("id").is(address));
-        Update update = new Update().pull("address", query2);
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, Employee.class);
-        if (updateResult.getMatchedCount() == 0) {
-            throw new RuntimeException("Address not removed");
-        }
+    @DeleteMapping("/{id}/address/{addressId}")
+    public ResponseEntity<DtoResponse> removeAddress(@PathVariable String id, @PathVariable String addressId) {
         Employee employee = employeeService.getEmployeeById(id);
+        employee.setAddress(employee.getAddress()
+                .stream()
+                .filter(c -> c.getId().equals(addressId))
+                .collect(Collectors.toList()));
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -245,14 +220,11 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}/document/{documentId}")
     public ResponseEntity<DtoResponse> removeDocument(@PathVariable String id, @PathVariable String documentId) {
-        Query query = new Query(Criteria.where("id").is(id));
-        Query query2 = new Query(Criteria.where("id").is(documentId));
-        Update update = new Update().pull("personalDocument", query2);
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, Employee.class);
-        if (updateResult.getMatchedCount() == 0) {
-            throw new RuntimeException("Document not removed");
-        }
         Employee employee = employeeService.getEmployeeById(id);
+        employee.setPersonalDocument(employee.getPersonalDocument()
+                .stream()
+                .filter(c -> c.getId().equals(documentId))
+                .collect(Collectors.toList()));
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -262,4 +234,30 @@ public class EmployeeController {
         return ResponseEntity.ok().body(dtoResponse);
     }
 
+    @GetMapping("/{id}/visa")
+    public ResponseEntity<DtoResponse> getVisas(@PathVariable String id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("fullName", employee.getFirstName() + " " + employee.getLastName());
+        map.put("visaStatus", employee.getVisaStatus());
+        DtoResponse dtoResponse = DtoResponse.builder()
+                .success(true)
+                .timestamp(LocalDateTime.now())
+                .data(map)
+                .message("Employee full name and visas retrieved successfully")
+                .build();
+        return ResponseEntity.ok().body(dtoResponse);
+    }
+
+    @GetMapping("/houseId/{houseId}")
+    public ResponseEntity<DtoResponse> getEmployeesByHouseId(@PathVariable String houseId) {
+        List<Employee> employees = employeeService.getEmployeesByHouseId(houseId);
+        DtoResponse dtoResponse = DtoResponse.builder()
+                .success(true)
+                .timestamp(LocalDateTime.now())
+                .data(employees)
+                .message("Employee retrieved by HouseId successfully")
+                .build();
+        return ResponseEntity.ok().body(dtoResponse);
+    }
 }

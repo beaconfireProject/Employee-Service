@@ -125,16 +125,25 @@
 			"request": {
 				"method": "PATCH",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lastName\": \"Doe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:9001/api/employee/e1001",
+					"raw": "http://localhost:9000/api/employees/e1001",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "9001",
+					"port": "9000",
 					"path": [
 						"api",
-						"employee",
+						"employees",
 						"e1001"
 					]
 				}
@@ -388,6 +397,74 @@
 						"e1001",
 						"address",
 						"1681439992"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Full Name and VIsa",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/e1001/visa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"e1001",
+						"visa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee by House Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/employees/houseId/h1001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"employees",
+						"houseId",
+						"h1001"
 					]
 				}
 			},
