@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -32,6 +34,18 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<DtoResponse> createEmployee(@RequestBody Employee employee) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            Object userIdObj = auth.getDetails();
+            if (userIdObj instanceof Long) {
+                Long userId = (Long) userIdObj;
+                System.out.println("User ID from JWT token: " + userId);
+            } else {
+                System.out.println("User ID not found in authentication details");
+            }
+        } else {
+            System.out.println("No authenticated user found");
+        }
         Employee created = employeeService.createEmployee(employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
