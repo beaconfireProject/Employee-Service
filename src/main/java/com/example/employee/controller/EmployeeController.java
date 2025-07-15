@@ -58,7 +58,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> createEmployee(@RequestBody Employee employee) {
         Employee created = employeeService.createEmployee(employee);
         DtoResponse dtoResponse = DtoResponse.builder()
@@ -84,7 +84,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> getEmployeeById(@PathVariable String id) {
         Employee employee = employeeService.getEmployeeById(id);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
@@ -98,7 +98,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> updateEmployee(@PathVariable String id, @RequestBody Map<String, Object> body) {
         Employee employee = employeeService.patchEmployee(id, body);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
@@ -125,7 +125,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/userId/{userId}")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> getEmployeeByUserId(@PathVariable String userId) {
         if (!checkUserID(userId)) throw new ForbiddenException();
         Employee employee = employeeService.getEmployeeByUserId(userId);
@@ -139,7 +139,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/{id}/document")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> addDocument(@PathVariable String id, @RequestBody PersonalDocument document) {
         document.setId("" + (int)(Math.random() * (Integer.MAX_VALUE - 1)));
         Employee employee = employeeService.getEmployeeById(id);
@@ -158,7 +158,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/{id}/visa")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> addVisa(@PathVariable String id, @RequestBody VisaStatus visa) {
         visa.setId("" + (int)(Math.random() * (Integer.MAX_VALUE - 1)));
         Employee employee = employeeService.getEmployeeById(id);
@@ -177,7 +177,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/{id}/address")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> addAddress(@PathVariable String id, @RequestBody Address address) {
         address.setId("" + (int)(Math.random() * (Integer.MAX_VALUE - 1)));
         Employee employee = employeeService.getEmployeeById(id);
@@ -196,6 +196,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/{id}/contact")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> addContact(@PathVariable String id, @RequestBody Contact contact) {
         contact.setId("" + (int)(Math.random() * (Integer.MAX_VALUE - 1)));
         Employee employee = employeeService.getEmployeeById(id);
@@ -231,7 +232,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}/visa/{visaId}")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> removeVisa(@PathVariable String id, @PathVariable String visaId) {
         Employee employee = employeeService.getEmployeeById(id);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
@@ -249,7 +250,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}/address/{addressId}")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> removeAddress(@PathVariable String id, @PathVariable String addressId) {
         Employee employee = employeeService.getEmployeeById(id);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
@@ -267,7 +268,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}/document/{documentId}")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> removeDocument(@PathVariable String id, @PathVariable String documentId) {
         Employee employee = employeeService.getEmployeeById(id);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
@@ -285,7 +286,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}/visa")
-    @PreAuthorize("hasAnyAuthority('HR', 'employee')")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
     public ResponseEntity<DtoResponse> getVisas(@PathVariable String id) {
         Employee employee = employeeService.getEmployeeById(id);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
