@@ -164,6 +164,7 @@ public class EmployeeController {
         Employee employee = employeeService.getEmployeeById(id);
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
         List<VisaStatus> vs = employee.getVisaStatus();
+        vs.forEach(visaS -> visaS.setActiveFlag(false));
         vs.add(visa);
         employee.setVisaStatus(vs);
         employee = employeeService.updateEmployee(id, employee);
