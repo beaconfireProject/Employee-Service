@@ -56,7 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
 
             } catch (JwtException ex) {
-                System.out.println("exception");
+                System.out.println(ex.getMessage());
                 // Invalid or expired token - optionally log or handle
             }
         }
@@ -64,7 +64,6 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             chain.doFilter(request, response);
         } catch (Exception e) {
-            System.out.println("exception");
             throw new RuntimeException(e);
         }
     }

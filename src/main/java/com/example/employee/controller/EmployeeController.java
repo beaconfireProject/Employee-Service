@@ -221,8 +221,9 @@ public class EmployeeController {
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
         employee.setContact(employee.getContact()
                 .stream()
-                .filter(c -> c.getId().equals(contactId))
+                .filter(c -> !c.getId().equals(contactId))
                 .collect(Collectors.toList()));
+        employee = employeeService.updateEmployee(id, employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -239,8 +240,9 @@ public class EmployeeController {
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
         employee.setVisaStatus(employee.getVisaStatus()
                 .stream()
-                .filter(c -> c.getId().equals(visaId))
+                .filter(c -> !c.getId().equals(visaId))
                 .collect(Collectors.toList()));
+        employee = employeeService.updateEmployee(id, employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -257,8 +259,9 @@ public class EmployeeController {
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
         employee.setAddress(employee.getAddress()
                 .stream()
-                .filter(c -> c.getId().equals(addressId))
+                .filter(c -> !c.getId().equals(addressId))
                 .collect(Collectors.toList()));
+        employee = employeeService.updateEmployee(id, employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -275,8 +278,9 @@ public class EmployeeController {
         if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
         employee.setPersonalDocument(employee.getPersonalDocument()
                 .stream()
-                .filter(c -> c.getId().equals(documentId))
+                .filter(c -> !c.getId().equals(documentId))
                 .collect(Collectors.toList()));
+        employee = employeeService.updateEmployee(id, employee);
         DtoResponse dtoResponse = DtoResponse.builder()
                 .success(true)
                 .timestamp(LocalDateTime.now())
@@ -314,5 +318,19 @@ public class EmployeeController {
                 .message("Employee retrieved by HouseId successfully")
                 .build();
         return ResponseEntity.ok().body(dtoResponse);
+    }
+
+    @GetMapping("/token")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
+    public ResponseEntity<DtoResponse> getEmployeeFromToken() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            Object userIdObj = auth.getDetails();
+            if (userIdObj instanceof Long) {
+                Long userId = (Long) userIdObj;
+                return this.getEmployeeByUserId(userId.toString());
+            }
+        }
+        throw new RuntimeException("no userId found");
     }
 }
