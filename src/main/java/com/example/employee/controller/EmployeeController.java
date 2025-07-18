@@ -333,4 +333,19 @@ public class EmployeeController {
         }
         throw new RuntimeException("no userId found");
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('HR', 'EMPLOYEE')")
+    public ResponseEntity<DtoResponse> putEmployee(@PathVariable String id, @RequestBody Employee putEmployee) {
+        Employee employee = employeeService.getEmployeeById(id);
+        if (!checkUserID(employee.getUserId())) throw new ForbiddenException();
+        employee = employeeService.updateEmployee(id, putEmployee);
+        DtoResponse dtoResponse = DtoResponse.builder()
+                .success(true)
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .message("Employee retrieved successfully")
+                .build();
+        return ResponseEntity.ok().body(dtoResponse);
+    }
 }
